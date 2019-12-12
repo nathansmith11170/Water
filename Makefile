@@ -1,41 +1,17 @@
-# A simple Makefile for compiling small SDL projects
+OBJS = water.c
 
-# set the compiler
-CC := clang
+#DEPS = MatrixGraph.h prototypes.h LTexture.h
 
-# set the compiler flags
-CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image -lm
-# add header files here
-HDRS :=
+CC = gcc
 
-# add source files here
-SRCS := #file-name.c
+COMPILER_FLAGS = -w -g -pedantic -std=c99 $(shell sdl2-config --cflags)
 
-# generate names of object files
-OBJS := $(SRCS:.c=.o)
+LINKER_FLAGS = $(shell sdl2-config --libs)
 
-# name of executable
-EXEC := #name your executable file
+OBJ_NAME = water
 
-# default recipe
-all: $(EXEC)
- 
-showfont: showfont.c Makefile
-    $(CC) -o $@ $@.c $(CFLAGS) $(LIBS)
-
-glfont: glfont.c Makefile
-    $(CC) -o $@ $@.c $(CFLAGS) $(LIBS)
-
-# recipe for building the final executable
-$(EXEC): $(OBJS) $(HDRS) Makefile
-    $(CC) -o $@ $(OBJS) $(CFLAGS)
-
-# recipe for building object files
-#$(OBJS): $(@:.o=.c) $(HDRS) Makefile
-#    $(CC) -o $@ $(@:.o=.c) -c $(CFLAGS)
-
-# recipe to clean the workspace
 clean:
-    rm -f $(EXEC) $(OBJS)
+	rm -f $(OBJ_NAME) *.o
 
-.PHONY: all clean
+all: $(OBJS) $(DEPS)
+	$(CC) $(OBJS) $(COMPILER_FLAGS) -o $(OBJ_NAME) $(LINKER_FLAGS)
